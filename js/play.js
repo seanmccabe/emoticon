@@ -37,8 +37,16 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
 
 
   // angularjs event handlers
+  var clickSound = new buzz.sound("audio/ECS FX 19.wav").setVolume(60);
+  var setSound = new buzz.sound("audio/ECS FX 20.wav").setVolume(70);
+  var setterSound = new buzz.sound("audio/ECS FX 29.wav").setVolume(80);
+  var settestSound = new buzz.sound("audio/ECS FX 03.wav").setVolume(100);
 
   $scope.clickCard = function (card) {
+    $timeout(function () {
+      clickSound.play();
+    });
+
     if (card.selected) {
       card.selected = false;
       return;
@@ -67,11 +75,16 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
   var processSet = function (selectedCards) {
     return function () {
       if (Deck.isSet(selectedCards)) {
+        $timeout(function () {
+          setSound.play();
+        });
+
         for (var i = 0; i < $scope.board.length; i++) {
           if ($scope.board[i].selected) {
             $scope.board[i] = deck.next();
           }
         }
+
         for (var j = 0; j < selectedCards.length; j++) {
           selectedCards[j].selected = false;
           deck.refill(selectedCards[j]);
