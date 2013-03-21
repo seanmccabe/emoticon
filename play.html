@@ -1,0 +1,14 @@
+<div class="score">score: {{playerScore}}</div>
+
+<!-- board -->
+<div class="board">
+  <div ng-repeat="card in board" ng-click="clickCard()" ng-class="classesForCard(card)"
+       class="card btn btn-large btn-block palette-clouds"></div>
+</div>
+
+<ul>
+  <li ng-repeat="event in events" ng-show="event.message">
+    <span ng-class="{player: true, me: player == playerId}">{{event.player}}</span>:
+    {{event.message}}
+  </li>
+</ul>
