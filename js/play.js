@@ -23,12 +23,28 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
 
   // this lets us put the card image in a
   // css background-image, so you can't drag it
-  $scope.classesForCard = function (card) {
-    var classes = {};
-    classes.active = card.selected;
-    classes["card" + card.name] = true;
-    return classes;
+  $scope.cardStyle = function (card) {
+    var style = {};
+    style["background-image"] = "url(images/" + card.name + ".png)"
+    return style;
   };
+
+  var boost = 0;
+  $scope.boostStyle = function () {
+    return {
+      width: (boost > 100 ? 100 : boost) + "%"
+    };
+  };
+
+  var decayBoost = function () {
+    if (boost >= 5) {
+      boost -= 5;
+    } else {
+      boost = 0;
+    }
+    $timeout(decayBoost, 1500);
+  };
+  $timeout(decayBoost);
 
   // initialize board with 10 cards
   for (var i = 0; i < 10; i++) {
@@ -76,7 +92,15 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
     return function () {
       if (Deck.isSet(selectedCards)) {
         $timeout(function () {
-          setSound.play();
+          boost = boost + 25;
+          boost = boost > 125 ? 125 : boost;  // buffer over 100%
+          if (boost >= 100) {
+            settestSound.play();
+          } else if (boost > 50) {
+            setterSound.play();
+          } else {
+            setSound.play();
+          }
         });
 
         for (var i = 0; i < $scope.board.length; i++) {
