@@ -60,9 +60,8 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
       return;
     }
 
-    // timeout in case angular wants to update the ui
+    // timeout so ui can update
     $timeout(processSet(selectedCards));
-
   };
 
   var processSet = function (selectedCards) {
