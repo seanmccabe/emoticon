@@ -21,22 +21,64 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
   $scope.board = [];
   var deck = Deck.create(gameId);
 
-  for (var i = 0; i < 10; i++) {
-    $scope.board.push(deck.next());
-  }
-
   // this lets us put the card image in a
   // css background-image, so you can't drag it
   $scope.classesForCard = function (card) {
     var classes = {};
+    classes.active = card.selected;
     classes["card" + card.name] = true;
     return classes;
   };
 
+  // initialize board with 10 cards
+  for (var i = 0; i < 10; i++) {
+    $scope.board.push(deck.next());
+  }
+
+
   // angularjs event handlers
 
-  $scope.clickCard = function () {
-    
+  $scope.clickCard = function (card) {
+    if (card.selected) {
+      card.selected = false;
+      return;
+    }
+
+    var selectedCards = [];
+    for (var i = 0; i < $scope.board.length; i++) {
+      if ($scope.board[i].selected) {
+        selectedCards.push($scope.board[i]);
+      }
+    }
+
+    if (selectedCards.length < 3) {
+      card.selected = true;
+      selectedCards.push(card);
+    }
+
+    if (selectedCards.length != 3) {
+      return;
+    }
+
+    // timeout in case angular wants to update the ui
+    $timeout(processSet(selectedCards));
+
+  };
+
+  var processSet = function (selectedCards) {
+    return function () {
+      if (Deck.isSet(selectedCards)) {
+        for (var i = 0; i < $scope.board.length; i++) {
+          if ($scope.board[i].selected) {
+            $scope.board[i] = deck.next();
+          }
+        }
+        for (var j = 0; j < selectedCards.length; j++) {
+          selectedCards[j].selected = false;
+          deck.refill(selectedCards[j]);
+        }
+      }
+    };
   };
 
   // firebase callbacks

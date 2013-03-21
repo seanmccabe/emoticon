@@ -2,8 +2,9 @@
 
 <!-- board -->
 <div class="board">
-  <div ng-repeat="card in board" ng-click="clickCard()" ng-class="classesForCard(card)"
-       class="card btn btn-large btn-block palette-clouds"></div>
+  <div ng-repeat="card in board" ng-click="clickCard(card)" ng-class="classesForCard(card)"
+       class="card btn btn-large btn-block palette-clouds">
+  </div>
 </div>
 
 <ul>
