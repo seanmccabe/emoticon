@@ -1,3 +1,14 @@
+.enemy {
+  width: 640px;
+  margin-left: 250px;
+  margin-top: 100px;
+}
+
+.board {
+  width: 640px;
+  margin-left: 250px;
+}
+
 .card {
   width: 118px;
   height: 165px;
@@ -9,11 +20,6 @@
 
 .card:hover {
   background-position: 9px 5px;
-}
-
-.board {
-  width: 640px;
-  margin-left: 250px;
 }
 
 .progress {

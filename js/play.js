@@ -42,7 +42,7 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
     } else {
       boost = 0;
     }
-    $timeout(decayBoost, 1500);
+    $timeout(decayBoost, 2000);
   };
   $timeout(decayBoost);
 
@@ -50,6 +50,23 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
   for (var i = 0; i < 10; i++) {
     $scope.board.push(deck.next());
   }
+
+  $scope.totalDamage = 0;
+  // TEMPORARY TEMPORARY TEMPORARY
+  $scope.enemy = {
+    name: "Mysterious Guard",
+    health: 1000,
+    img: "images/darknut.png"
+  };
+  $scope.enemyHealthStyle = function () {
+    return {
+      width: ($scope.enemyHealth() * 100.0 / $scope.enemy.health) + "%"
+    };
+  };
+  $scope.enemyHealth = function () {
+    var currentHealth = $scope.enemy.health - $scope.totalDamage;
+    return currentHealth < 0 ? 0 : currentHealth;
+  };
 
 
   // angularjs event handlers
@@ -93,13 +110,16 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
       if (Deck.isSet(selectedCards)) {
         $timeout(function () {
           boost = boost + 25;
-          boost = boost > 125 ? 125 : boost;  // buffer over 100%
-          if (boost >= 100) {
+          boost = boost > 110 ? 110 : boost;  // buffer over 100%
+          if (boost === 110) {
             settestSound.play();
-          } else if (boost > 50) {
+            damageEnemy(100);
+          } else if (boost > 60) {
             setterSound.play();
+            damageEnemy(30);
           } else {
             setSound.play();
+            damageEnemy(10);
           }
         });
 
@@ -115,6 +135,14 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
         }
       }
     };
+  };
+
+  var damageEnemy = function (damage) {
+    $scope.totalDamage += damage;
+    if ($scope.totalDamage >= $scope.enemy.health) {
+      // TEMPORARY TEMPORARY TEMPORARY
+      alert("you win");
+    }
   };
 
   // firebase callbacks

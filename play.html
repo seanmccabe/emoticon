@@ -1,4 +1,14 @@
-<div class="score">score: {{playerScore}}</div>
+
+
+<!-- enemy -->
+<div class="enemy">
+  <img ng-src="{{enemy.img}}"/>
+  <h2>{{enemy.name}}</h2>
+  <div class="health">health: {{enemyHealth()}}/{{enemy.health}}</div>
+  <div class="progress">
+    <div class="bar bar-danger" ng-style="enemyHealthStyle()"></div>
+  </div>
+</div>
 
 <!-- board -->
 <div class="board">
