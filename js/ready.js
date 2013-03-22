@@ -1,4 +1,4 @@
-var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $location) {
+var readyController = function ($scope, $timeout, $routeParams, $cookieStore) {
   var gameId = $routeParams.gameId;
 
   var firebaseUrl = "https://emoticon.firebaseio.com";
@@ -13,23 +13,7 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
   };
 
   $scope.talentNames = ["surge", "assist", "power"];
-  $scope.talents = {
-    surge: {
-      label: "Energy Surge",
-      img: "images/icebeam.png",
-      description: "Slows decay of your boost level, making combos much easier"
-    },
-    assist: {
-      label: "Laser Assist",
-      img: "images/option.png",
-      description: "Adds a consistent amount of additional damage"
-    },
-    power: {
-      label: "Power Boost",
-      img: "images/hammer.png",
-      description: "Greatly increases damage at high levels of boost"
-    }
-  };
+  $scope.talents = Talents;
 
 
   // read player id from cookie or generate a new one
@@ -91,13 +75,12 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
     return false;
   };
 
-  var enemyRandom = new Nonsense();
   $scope.enemyRef = $scope.gameRef.child("enemy");
   $scope.enemyRef.on("value", function (snap) {
     var enemy = snap.val();
+    var random = new Nonsense(new Date().getTime());
     if (enemy === null) {
-      var e = enemyRandom.integerInRange(enemies.length);
-      var enemy = enemies[e];
+      var enemy = random.pick(enemies);
       $timeout(function () {
         $scope.enemyRef.set(enemy);
       });

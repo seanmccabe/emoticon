@@ -7,4 +7,8 @@ angular.module("ngView", ["ngCookies"], function ($routeProvider) {
     templateUrl: "play.html",
     controller: playController
   });
+  $routeProvider.when("/games/:gameId/done", {
+    templateUrl: "done.html",
+    controller: playController
+  });
 });

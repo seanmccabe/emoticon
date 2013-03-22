@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="span5">
+      <h1>Victory!</h1>
+
+      <h2>{{enemy.name}} was defeated!</h2>
+    </div>
+    <div class="span3">
+      <a ng-href="{{nextHref()}}" href="#" class="btn btn-large btn-block btn-danger">Next Battle</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span3">
+      <h2>{{player.name}}</h2>
+      <img ng-src="{{talents[player.talent].img}}"/>
+    </div>
+    <div class="span2">
+      <h5>THIS BATTLE</h5>
+
+      <p><strong>Damage</strong> {{playerDamage}}</p>
+
+      <p><strong>Sets</strong> {{playerSets}}</p>
+
+      <p><strong>Damage Per Set</strong> {{damagePerSet(playerDamage, playerSets)}}</p>
+    </div>
+    <div class="span3">
+      <div ng-include src="'_statistics.html'"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span8">
+      <div ng-include src="'_leaderboard.html'"></div>
+    </div>
+  </div>
+</div>

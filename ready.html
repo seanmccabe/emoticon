@@ -1,4 +1,3 @@
-<!-- go button -->
 <div class="container">
   <div class="row">
     <div class="span5">
@@ -47,17 +46,7 @@
     </div>
 
     <div class="span3">
-      <h5>Statistics</h5>
-
-      <p><strong>Total Damage</strong> {{player.totalDamage}}</p>
-
-      <p><strong>Total Sets</strong> {{player.totalSets}}</p>
-
-      <p><strong>Kills</strong> {{player.kills}}</p>
-
-      <p><strong>Average Damage Per Set</strong> {{damagePerSet(player.totalDamage, player.totalSets)}}</p>
-
-      <p><strong>Account Created</strong> {{player.createdOn}}</p>
+      <div ng-include src="'_statistics.html'"></div>
     </div>
 
   </div>

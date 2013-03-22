@@ -51,27 +51,7 @@
           <img ng-src="{{talents[player.talent].img}}"/>
         </div>
         <div class="span5">
-          <h2>Leaderboard</h2>
-          <table class="table">
-            <thead>
-            <tr>
-              <th></th>
-              <th></th>
-              <th>Damage</th>
-              <th>Sets</th>
-              <th>Damage Per Set</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="event in leaderboard">
-              <td><img ng-src="{{talents[event.talent].imgSmall}}"/></td>
-              <td><strong>{{event.name}}</strong></td>
-              <td>{{event.playerDamage}}</td>
-              <td>{{event.playerSets}}</td>
-              <td>{{damagePerSet(event.playerDamage, event.playerSets)}}</td>
-            </tr>
-            </tbody>
-          </table>
+          <div ng-include src="'_leaderboard.html'"></div>
         </div>
       </div>
     </div>
