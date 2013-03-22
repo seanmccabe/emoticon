@@ -1,0 +1,58 @@
+<!-- go button -->
+<div class="container">
+  <div class="row">
+    <div class="span9">
+      <h1>Emoticon Battle Arena</h1>
+    </div>
+    <div class="span3">
+      <a ng-href="{{playHref()}}" href="#" class="btn btn-large btn-block btn-danger">Join the
+        Battle!</a>
+    </div>
+  </div>
+
+  <!-- player -->
+  <h2>Player</h2>
+  <h5>Name</h5>
+
+  <div class="row">
+    <div class="span12">
+      <input type="text" ng-model="player.name" value="{{player.name}}" class="span3"/>
+    </div>
+  </div>
+  <h5>Talent</h5>
+
+  <div class="row">
+    <div class="span12">
+      <div class="btn-group">
+        <div ng-repeat="talentName in talentNames" ng-click="selectTalent(talentName)"
+             ng-class="{active: player.talent.name == talentName}" class="btn btn-inverse">{{talents[talentName].label}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="span2">
+      <img ng-src="{{player.talent.img}}"></img>
+    </div>
+    <div class="span2">
+      <h5>{{player.talent.label}}</h5>
+      <p>{{player.talent.description}}</p>
+    </div>
+  </div>
+
+
+  <hr/>
+
+  <div class="row">
+    <div class="span9">
+      <h2>Reset</h2>
+    </div>
+    <div class="span3">
+      <a ng-href="{{resetHref()}}" ng-click="reset()" href="#" class="btn btn-large btn-block btn-inverse">Reset the
+        Encounter</a>
+    </div>
+  </div>
+</div>
+
+

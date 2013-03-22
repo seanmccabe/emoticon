@@ -1,22 +1,11 @@
 var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
   var gameId = $routeParams.gameId;
+  $scope.playerId = $cookieStore.get("playerId");
 
-  var firebaseUrl = "https://emoticon.firebaseio.com/games/" + gameId;
+  var firebaseUrl = "https://emoticon.firebaseio.com";
   $scope.firebaseRef = new Firebase(firebaseUrl);
-
-  // read player id from cookie or generate a new one
-  $scope.playerId = (function (playerId) {
-    if (playerId) {
-      return playerId;
-    }
-    playerId = "";
-    for (var i = 0; i < 16; i++) {
-      var digit = Math.floor(Math.random() * 256).toString(16);
-      playerId += digit.length === 1 ? "0" + digit : digit;
-    }
-    $cookieStore.put("playerId", playerId);
-    return playerId;
-  })($cookieStore.get("playerId"));
+  $scope.gameRef = $scope.firebaseRef.child("games").child(gameId);
+  $scope.playerRef = $scope.firebaseRef.child("players").child($scope.playerId);
 
   $scope.board = [];
   var deck = Deck.create(gameId);
