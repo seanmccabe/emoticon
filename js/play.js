@@ -7,6 +7,7 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore, $lo
   $scope.gameRef = $scope.firebaseRef.child("games").child(gameId);
   $scope.playerRef = $scope.firebaseRef.child("players").child($scope.playerId);
   $scope.enemyRef = $scope.gameRef.child("enemy");
+  $scope.gamePlayerRef = $scope.gameRef.child("players").child($scope.playerId);
   $scope.gameEventsRef = $scope.gameRef.child("events");
 
   $scope.playerRef.on("value", function (snap) {
@@ -183,15 +184,26 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore, $lo
     });
   };
 
-  var finishGame = function () {
-    $scope.player.totalDamage += $scope.playerDamage;
-    $scope.player.totalSets += $scope.playerSets;
-    $scope.player.kills += 1;
-    $scope.playerRef.set($scope.player);
-
+  $scope.finishedGame = false;
+  $scope.gamePlayerRef.on("value", function (snap) {
     $timeout(function () {
-      doneSound.play();
+      $scope.finishedGame = snap.val().finished;
     });
+  });
+  var finishGame = function () {
+    if (!$scope.finishedGame) {
+      $scope.player.totalDamage += $scope.playerDamage;
+      $scope.player.totalSets += $scope.playerSets;
+      $scope.player.kills += 1;
+      $scope.playerRef.set($scope.player);
+      $scope.gamePlayerRef.set({
+        finished: true
+      });
+
+      $timeout(function () {
+        doneSound.play();
+      });
+    }
 
     $location.path("/games/" + gameId + "/done");
   };
@@ -223,17 +235,15 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore, $lo
     var totalDamage = Math.max(event.totalDamage, $scope.totalDamage + event.damage);
     $timeout(function () {
       $scope.totalDamage = totalDamage;
+      if (event.player === $scope.playerId) {
+        $scope.playerDamage = event.playerDamage;
+        $scope.playerSets = event.playerSets;
+      }
       addToLeaderboard(event);
       if ($scope.totalDamage >= $scope.enemy.health) {
         finishGame();
       }
     });
-    if (event.player === $scope.playerId) {
-      $timeout(function () {
-        $scope.playerDamage = event.playerDamage;
-        $scope.playerSets = event.playerSets;
-      });
-    }
   });
 
   $scope.nextHref = function () {
