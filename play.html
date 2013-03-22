@@ -1,14 +1,17 @@
 <!-- enemy -->
 <div class="container">
 
-  <div class="enemy unit-frame">
-    <img ng-src="{{enemy.img}}"/>
+  <div class="row">
+    <div class="span8">
+      <img ng-src="{{enemy.img}}"/>
 
-    <h2>{{enemy.name}}</h2>
+      <h2>{{enemy.name}}</h2>
 
-    <div class="health">health: {{enemyHealth()}}/{{enemy.health}}</div>
-    <div class="progress">
-      <div class="bar bar-danger" ng-style="enemyHealthStyle()"></div>
+      <p><strong>Health</strong> {{enemyHealth()}}/{{enemy.health}}</p>
+
+      <div class="progress">
+        <div class="bar bar-danger" ng-style="enemyHealthStyle()"></div>
+      </div>
     </div>
   </div>
 
@@ -21,30 +24,38 @@
   </div>
 
   <!-- player -->
-  <div class="player unit-frame">
-    <div class="row">
-      <div class="span8">
-        <div class="progress">
-          <div class="bar bar-success" ng-style="boostStyle()"></div>
-        </div>
+  <div class="row">
+    <div class="span8">
+      <div class="progress">
+        <div class="bar bar-success" ng-style="boostStyle()"></div>
+      </div>
 
-        <div class="row">
-          <div class="span2">
-            <p><strong>Boost</strong> {{boost}}</p>
-          </div>
-          <div class="span2">
-            <p><strong>Damage</strong> {{damage}}</p>
-          </div>
-          <div class="span2">
-            <p><strong>Sets</strong> {{sets}}</p>
-          </div>
-          <div class="span2">
-            <p><strong>Damage Per Set</strong> {{damagePerSet()}}</p>
-          </div>
+      <div class="row">
+        <div class="span2">
+          <p><strong>Boost</strong> {{boost}}</p>
         </div>
+        <div class="span2">
+          <p><strong>Damage</strong> {{playerDamage}}</p>
+        </div>
+        <div class="span2">
+          <p><strong>Sets</strong> {{sets}}</p>
+        </div>
+        <div class="span2">
+          <p><strong>Damage Per Set</strong> {{damagePerSet()}}</p>
+        </div>
+      </div>
 
-        <h2>{{player.name}}</h2>
-        <img ng-src="{{talents[player.talent].img}}"/>
+      <div class="row">
+        <div class="span3">
+          <h2>{{player.name}}</h2>
+          <img ng-src="{{talents[player.talent].img}}"/>
+        </div>
+        <div class="span5">
+          <h2>Leaderboard</h2>
+
+          <p ng-repeat="event in leaderboard"><img ng-src="{{talents[event.talent].imgSmall}}"/>
+            <strong>{{event.name}}</strong> {{event.playerDamage}} damage</p>
+        </div>
       </div>
     </div>
 

@@ -77,6 +77,13 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
     return false;
   };
 
+  $scope.playerDamagePerSet = function () {
+    if ($scope.player.totalSets === 0) {
+      return 0;
+    }
+    return Math.round($scope.player.totalDamage / $scope.player.totalSets);
+  };
+
   // Reset nukes the game
   $scope.gameRef = $scope.firebaseRef.child("games").child(gameId);
   $scope.reset = function () {
@@ -84,4 +91,29 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
     return false;
   };
 
+  var enemyRandom = new Nonsense();
+  $scope.enemyRef = $scope.gameRef.child("enemy");
+  $scope.enemyRef.on("value", function (snap) {
+    var enemy = snap.val();
+    if (enemy === null) {
+      var e = enemyRandom.integerInRange(enemies.length);
+      var enemy = enemies[e];
+      $timeout(function () {
+        $scope.enemyRef.set(enemy);
+      });
+    }
+  });
+
+  var enemies = [
+    {
+      name: "Mysterious Guard",
+      img: "images/darknut.png",
+      health: 500
+    },
+    {
+      name: "Eight Kappas",
+      img: "images/eightkappas.png",
+      health: 500
+    }
+  ];
 };
