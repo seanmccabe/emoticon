@@ -12,6 +12,9 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore, $lo
   $scope.playerRef.on("value", function (snap) {
     $timeout(function () {
       $scope.player = snap.val();
+      if (!$scope.player.soundEnabled) {
+        buzz.all().mute();
+      }
     });
   });
 
@@ -101,6 +104,7 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore, $lo
   var setSound = new buzz.sound("audio/ECS FX 20.wav").setVolume(60);
   var setterSound = new buzz.sound("audio/ECS FX 29.wav").setVolume(80);
   var settestSound = new buzz.sound("audio/ECS FX 03.wav").setVolume(100);
+  var doneSound = new buzz.sound("audio/Zap FX 002.wav").setVolume(100);
 
   $scope.clickCard = function (card) {
     $timeout(function () {
@@ -184,6 +188,10 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore, $lo
     $scope.player.totalSets += $scope.playerSets;
     $scope.player.kills += 1;
     $scope.playerRef.set($scope.player);
+
+    $timeout(function () {
+      doneSound.play();
+    });
 
     $location.path("/games/" + gameId + "/done");
   };

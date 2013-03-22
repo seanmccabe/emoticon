@@ -12,7 +12,7 @@ var Enemies = [
   {
     name: "Web Scale",
     img: "images/mongodb.png",
-    health: 10000
+    health: 100
   },
   {
     name: "Meat Of Unknown Origin",

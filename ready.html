@@ -11,17 +11,12 @@
   <!-- player -->
   <h2>Player</h2>
 
-  <h5>Name</h5>
-
-  <div class="row">
-    <div class="span8">
-      <input type="text" ng-model="player.name" ng-change="savePlayer()" value="{{player.name}}" class="span3"/>
-    </div>
-  </div>
-
   <div class="row">
     <div class="span5">
-      <h5>POWERUP</h5>
+      <h5>Name</h5>
+      <input type="text" ng-model="player.name" ng-change="savePlayer()" value="{{player.name}}" class="span3"/>
+
+      <h5>Powerup</h5>
 
       <div class="btn-group">
         <div ng-repeat="talentName in talentNames" ng-click="selectTalent(talentName)"
@@ -42,6 +37,11 @@
           <p>{{talents[player.talent].description}}</p>
         </div>
       </div>
+
+      <h5>Sound Effects</h5>
+
+      <input type="checkbox" ng-model="player.soundEnabled" ng-change="savePlayer()" class="sound-option"/>
+      <span class="sound-option">Enable Sound</span>
 
     </div>
 

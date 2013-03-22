@@ -42,6 +42,7 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore) {
         $scope.player.kills = 0;
         $scope.player.totalSets = 0;
         $scope.player.createdOn = new Date().format("fullDate");
+        $scope.player.soundEnabled = true;
         $scope.playerRef.set($scope.player);
       });
     } else {
