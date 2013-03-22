@@ -7,7 +7,6 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
   $scope.gameRef = $scope.firebaseRef.child("games").child(gameId);
   $scope.playerRef = $scope.firebaseRef.child("players").child($scope.playerId);
   $scope.enemyRef = $scope.gameRef.child("enemy");
-  $scope.gamePlayerRef = $scope.gameRef.child("players").child($scope.playerId);
   $scope.gameEventsRef = $scope.gameRef.child("events");
 
   $scope.playerRef.on("value", function (snap) {
