@@ -7,6 +7,12 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
   $scope.gameRef = $scope.firebaseRef.child("games").child(gameId);
   $scope.playerRef = $scope.firebaseRef.child("players").child($scope.playerId);
 
+  $scope.playerRef.on("value", function (snap) {
+    $timeout(function () {
+      $scope.player = snap.val();
+    });
+  });
+
   $scope.board = [];
   var deck = Deck.create(gameId);
 
@@ -18,18 +24,86 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
     return style;
   };
 
-  var boost = 0;
-  $scope.boostStyle = function () {
-    return {
-      width: (boost > 100 ? 100 : boost) + "%"
-    };
+  $scope.talents = {
+    surge: {
+      label: "Energy Surge",
+      img: "images/icebeam.png",
+      description: "Slows decay of your boost level, making combos much easier",
+      boostDecay: 3,
+      damage: function (boost) {
+        if (boost == 110) {
+          settestSound.play();
+          return 50;
+        } else if (boost > 60) {
+          setterSound.play();
+          return 20;
+        } else {
+          setSound.play();
+          return 10;
+        }
+      }
+    },
+    assist: {
+      label: "Laser Assist",
+      img: "images/option.png",
+      description: "Adds a consistent amount of additional damage",
+      boostDecay: 5,
+      damage: function (boost) {
+        if (boost == 110) {
+          settestSound.play();
+          return 65;
+        } else if (boost > 60) {
+          setterSound.play();
+          return 35;
+        } else {
+          setSound.play();
+          return 25;
+        }
+      }
+    },
+    power: {
+      label: "Power Boost",
+      img: "images/hammer.png",
+      boostDecay: 5,
+      description: "Greatly increases damage at high levels of boost",
+      damage: function (boost) {
+        if (boost == 110) {
+          settestSound.play();
+          return 100;
+        } else if (boost > 60) {
+          setterSound.play();
+          return 30;
+        } else {
+          setSound.play();
+          return 10;
+        }
+      }
+    }
   };
 
-  var decayBoost = function () {
-    if (boost >= 5) {
-      boost -= 5;
+  $scope.boost = 0;
+  $scope.boostStyle = function () {
+    return {
+      width: ($scope.boost > 100 ? 100 : $scope.boost) + "%"
+    };
+  };
+  $scope.boostClass = function () {
+    if ($scope.boost >= 75) {
+      return {"bar-danger": true};
+    } else if ($scope.boost >= 35) {
+      return {"bar-warning": true};
     } else {
-      boost = 0;
+      return {"bar-success": true};
+    }
+  };
+  var decayBoost = function () {
+    if ($scope.player) {
+      var decay = $scope.talents[$scope.player.talent].boostDecay;
+      if ($scope.boost >= decay) {
+        $scope.boost -= decay;
+      } else {
+        $scope.boost = 0;
+      }
     }
     $timeout(decayBoost, 2000);
   };
@@ -40,7 +114,14 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
     $scope.board.push(deck.next());
   }
 
-  $scope.totalDamage = 0;
+  $scope.damage = 0;
+  $scope.sets = 0;
+  $scope.damagePerSet = function () {
+    if ($scope.sets === 0) {
+      return 0;
+    }
+    return Math.round($scope.damage / $scope.sets);
+  }
   // TEMPORARY TEMPORARY TEMPORARY
   $scope.enemy = {
     name: "Mysterious Guard",
@@ -53,14 +134,14 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
     };
   };
   $scope.enemyHealth = function () {
-    var currentHealth = $scope.enemy.health - $scope.totalDamage;
+    var currentHealth = $scope.enemy.health - $scope.damage;
     return currentHealth < 0 ? 0 : currentHealth;
   };
 
 
   // angularjs event handlers
-  var clickSound = new buzz.sound("audio/ECS FX 19.wav").setVolume(60);
-  var setSound = new buzz.sound("audio/ECS FX 20.wav").setVolume(70);
+  var clickSound = new buzz.sound("audio/ECS FX 19.wav").setVolume(80);
+  var setSound = new buzz.sound("audio/ECS FX 20.wav").setVolume(60);
   var setterSound = new buzz.sound("audio/ECS FX 29.wav").setVolume(80);
   var settestSound = new buzz.sound("audio/ECS FX 03.wav").setVolume(100);
 
@@ -98,18 +179,11 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
     return function () {
       if (Deck.isSet(selectedCards)) {
         $timeout(function () {
-          boost = boost + 25;
-          boost = boost > 110 ? 110 : boost;  // buffer over 100%
-          if (boost === 110) {
-            settestSound.play();
-            damageEnemy(100);
-          } else if (boost > 60) {
-            setterSound.play();
-            damageEnemy(30);
-          } else {
-            setSound.play();
-            damageEnemy(10);
-          }
+          $scope.boost = $scope.boost + 25;
+          $scope.boost = $scope.boost > 110 ? 110 : $scope.boost;  // buffer over 100%
+          var damage = $scope.talents[$scope.player.talent].damage($scope.boost);
+          $scope.sets++;
+          damageEnemy(damage);
         });
 
         for (var i = 0; i < $scope.board.length; i++) {
@@ -127,8 +201,8 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
   };
 
   var damageEnemy = function (damage) {
-    $scope.totalDamage += damage;
-    if ($scope.totalDamage >= $scope.enemy.health) {
+    $scope.damage += damage;
+    if ($scope.damage >= $scope.enemy.health) {
       // TEMPORARY TEMPORARY TEMPORARY
       alert("you win");
     }

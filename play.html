@@ -18,17 +18,36 @@
          ng-style="cardStyle(card)"
          class="card btn btn-large btn-block palette-clouds">
     </div>
-
-    <div class="progress">
-      <div class="bar bar-warning" ng-style="boostStyle()"></div>
-    </div>
   </div>
 
   <!-- player -->
   <div class="player unit-frame">
-    <img ng-src="{{player.img}}"/>
+    <div class="row">
+      <div class="span8">
+        <div class="progress">
+          <div class="bar bar-success" ng-style="boostStyle()"></div>
+        </div>
 
-    <h2>{{player.name}}</h2>
+        <div class="row">
+          <div class="span2">
+            <p><strong>Boost</strong> {{boost}}</p>
+          </div>
+          <div class="span2">
+            <p><strong>Damage</strong> {{damage}}</p>
+          </div>
+          <div class="span2">
+            <p><strong>Sets</strong> {{sets}}</p>
+          </div>
+          <div class="span2">
+            <p><strong>Damage Per Set</strong> {{damagePerSet()}}</p>
+          </div>
+        </div>
+
+        <h2>{{player.name}}</h2>
+        <img ng-src="{{talents[player.talent].img}}"/>
+      </div>
+    </div>
+
   </div>
 
   <ul>
