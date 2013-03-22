@@ -77,11 +77,11 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
     return false;
   };
 
-  $scope.playerDamagePerSet = function () {
-    if ($scope.player.totalSets === 0) {
+  $scope.damagePerSet = function (damage, sets) {
+    if (sets === 0) {
       return 0;
     }
-    return Math.round($scope.player.totalDamage / $scope.player.totalSets);
+    return Math.round(damage / sets);
   };
 
   // Reset nukes the game

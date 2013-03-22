@@ -38,10 +38,10 @@
           <p><strong>Damage</strong> {{playerDamage}}</p>
         </div>
         <div class="span2">
-          <p><strong>Sets</strong> {{sets}}</p>
+          <p><strong>Sets</strong> {{playerSets}}</p>
         </div>
         <div class="span2">
-          <p><strong>Damage Per Set</strong> {{damagePerSet()}}</p>
+          <p><strong>Damage Per Set</strong> {{damagePerSet(playerDamage, playerSets)}}</p>
         </div>
       </div>
 
@@ -52,9 +52,26 @@
         </div>
         <div class="span5">
           <h2>Leaderboard</h2>
-
-          <p ng-repeat="event in leaderboard"><img ng-src="{{talents[event.talent].imgSmall}}"/>
-            <strong>{{event.name}}</strong> {{event.playerDamage}} damage</p>
+          <table class="table">
+            <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Damage</th>
+              <th>Sets</th>
+              <th>Damage Per Set</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="event in leaderboard">
+              <td><img ng-src="{{talents[event.talent].imgSmall}}"/></td>
+              <td><strong>{{event.name}}</strong></td>
+              <td>{{event.playerDamage}}</td>
+              <td>{{event.playerSets}}</td>
+              <td>{{damagePerSet(event.playerDamage, event.playerSets)}}</td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

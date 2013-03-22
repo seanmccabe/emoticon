@@ -128,12 +128,12 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
 
   $scope.totalDamage = 0; // team damage
   $scope.playerDamage = 0; // personal damage
-  $scope.sets = 0;
-  $scope.damagePerSet = function () {
-    if ($scope.sets === 0) {
+  $scope.playerSets = 0;
+  $scope.damagePerSet = function (damage, sets) {
+    if (sets === 0) {
       return 0;
     }
-    return Math.round($scope.playerDamage / $scope.sets);
+    return Math.round(damage / sets);
   };
 
 
@@ -188,7 +188,6 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
     return function () {
       if (Deck.isSet(selectedCards)) {
         $timeout(function () {
-          $scope.sets += 1;
           $scope.boost = $scope.boost + 25;
           $scope.boost = $scope.boost > 110 ? 110 : $scope.boost;  // buffer over 100%
           var damage = $scope.talents[$scope.player.talent].damage($scope.boost);
@@ -215,6 +214,7 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
       name: $scope.player.name,
       talent: $scope.player.talent,
       damage: damage, // damage done right now
+      playerSets: $scope.playerSets + 1,
       playerDamage: $scope.playerDamage + damage, // cumulative player damage
       totalDamage: $scope.totalDamage + damage // cumulative team damage
     });
@@ -222,7 +222,7 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
 
   var finishGame = function () {
     $scope.player.totalDamage += $scope.playerDamage;
-    $scope.player.totalSets += $scope.sets;
+    $scope.player.totalSets += $scope.playerSets;
     $scope.player.kills += 1;
     $scope.playerRef.set($scope.player);
 
@@ -264,6 +264,7 @@ var playController = function ($scope, $timeout, $routeParams, $cookieStore) {
     if (event.player === $scope.playerId) {
       $timeout(function () {
         $scope.playerDamage = event.playerDamage;
+        $scope.playerSets = event.playerSets;
       });
     }
   });
