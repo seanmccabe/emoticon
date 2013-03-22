@@ -25,7 +25,7 @@
     <div class="span12">
       <div class="btn-group">
         <div ng-repeat="talentName in talentNames" ng-click="selectTalent(talentName)"
-             ng-class="{active: player.talent.name == talentName}" class="btn btn-inverse">{{talents[talentName].label}}
+             ng-class="{active: player.talent == talentName}" class="btn btn-inverse">{{talents[talentName].label}}
         </div>
       </div>
     </div>
@@ -33,11 +33,11 @@
   <br/>
   <div class="row">
     <div class="span2">
-      <img ng-src="{{player.talent.img}}"></img>
+      <img ng-src="{{talents[player.talent].img}}"></img>
     </div>
     <div class="span2">
-      <h5>{{player.talent.label}}</h5>
-      <p>{{player.talent.description}}</p>
+      <h5>{{talents[player.talent].label}}</h5>
+      <p>{{talents[player.talent].description}}</p>
     </div>
   </div>
 

@@ -15,19 +15,16 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
   $scope.talentNames = ["surge", "assist", "power"];
   $scope.talents = {
     surge: {
-      name: "surge",
       label: "Energy Surge",
       img: "images/icebeam.png",
       description: "Slows decay of your boost level, making combos much easier"
     },
     assist: {
-      name: "assist",
       label: "Laser Assist",
       img: "images/option.png",
       description: "Adds a consistent amount of additional damage"
     },
     power: {
-      name: "power",
       label: "Power Boost",
       img: "images/hammer.png",
       description: "Greatly increases damage at high levels of boost"
@@ -56,7 +53,7 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
       $timeout(function () {
         $scope.player = {};
         $scope.player.name = "New Player";
-        $scope.player.talent = $scope.talents["surge"];
+        $scope.player.talent = "surge";
         $scope.player.totalDamage = 0;
         $scope.player.kills = 0;
         $scope.playerRef.set($scope.player);
@@ -69,7 +66,7 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
   });
 
   $scope.selectTalent = function (talentName) {
-    $scope.player.talent = $scope.talents[talentName];
+    $scope.player.talent = talentName;
     $scope.playerRef.set($scope.player);
     return false;
   };
