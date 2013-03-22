@@ -87,16 +87,5 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore) {
     }
   });
 
-  var enemies = [
-    {
-      name: "Mysterious Guard",
-      img: "images/darknut.png",
-      health: 500
-    },
-    {
-      name: "Eight Kappas",
-      img: "images/eightkappas.png",
-      health: 500
-    }
-  ];
+  var enemies = Enemies;
 };
