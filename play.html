@@ -1,36 +1,41 @@
-
-
 <!-- enemy -->
-<div class="enemy unit-frame">
-  <img ng-src="{{enemy.img}}"/>
-  <h2>{{enemy.name}}</h2>
-  <div class="health">health: {{enemyHealth()}}/{{enemy.health}}</div>
-  <div class="progress">
-    <div class="bar bar-danger" ng-style="enemyHealthStyle()"></div>
-  </div>
-</div>
+<div class="container">
 
-<!-- board -->
-<div class="board">
-  <div ng-repeat="card in board" ng-click="clickCard(card)" ng-class="{active: card.selected}"
-       ng-style="cardStyle(card)"
-       class="card btn btn-large btn-block palette-clouds">
+  <div class="enemy unit-frame">
+    <img ng-src="{{enemy.img}}"/>
+
+    <h2>{{enemy.name}}</h2>
+
+    <div class="health">health: {{enemyHealth()}}/{{enemy.health}}</div>
+    <div class="progress">
+      <div class="bar bar-danger" ng-style="enemyHealthStyle()"></div>
+    </div>
   </div>
 
-  <div class="progress">
-    <div class="bar bar-warning" ng-style="boostStyle()"></div>
+  <!-- board -->
+  <div class="board">
+    <div ng-repeat="card in board" ng-click="clickCard(card)" ng-class="{active: card.selected}"
+         ng-style="cardStyle(card)"
+         class="card btn btn-large btn-block palette-clouds">
+    </div>
+
+    <div class="progress">
+      <div class="bar bar-warning" ng-style="boostStyle()"></div>
+    </div>
   </div>
-</div>
 
-<!-- player -->
-<div class="player unit-frame">
-  <img ng-src="{{player.img}}"/>
-  <h2>{{player.name}}</h2>
-</div>
+  <!-- player -->
+  <div class="player unit-frame">
+    <img ng-src="{{player.img}}"/>
 
-<ul>
-  <li ng-repeat="event in events" ng-show="event.message">
-    <span ng-class="{player: true, me: player == playerId}">{{event.player}}</span>:
-    {{event.message}}
-  </li>
-</ul>
+    <h2>{{player.name}}</h2>
+  </div>
+
+  <ul>
+    <li ng-repeat="event in events" ng-show="event.message">
+      <span ng-class="{player: true, me: player == playerId}">{{event.player}}</span>:
+      {{event.message}}
+    </li>
+  </ul>
+
+</div>

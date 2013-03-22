@@ -1,51 +1,72 @@
 <!-- go button -->
 <div class="container">
   <div class="row">
-    <div class="span9">
+    <div class="span5">
       <h1>Emoticon Battle Arena</h1>
     </div>
     <div class="span3">
-      <a ng-href="{{playHref()}}" href="#" class="btn btn-large btn-block btn-danger">Join the
-        Battle!</a>
+      <a ng-href="{{playHref()}}" href="#" class="btn btn-large btn-block btn-danger">Join the Battle</a>
     </div>
   </div>
 
   <!-- player -->
   <h2>Player</h2>
+
   <h5>Name</h5>
 
   <div class="row">
-    <div class="span12">
-      <input type="text" ng-model="player.name" value="{{player.name}}" class="span3"/>
+    <div class="span8">
+      <input type="text" ng-model="player.name" ng-change="savePlayer()" value="{{player.name}}" class="span3"/>
     </div>
   </div>
-  <h5>Talent</h5>
 
   <div class="row">
-    <div class="span12">
+    <div class="span5">
+      <h5>Talent</h5>
+
       <div class="btn-group">
         <div ng-repeat="talentName in talentNames" ng-click="selectTalent(talentName)"
              ng-class="{active: player.talent == talentName}" class="btn btn-inverse">{{talents[talentName].label}}
         </div>
+
       </div>
+
+      <div class="row">
+        <div class="span2">
+          <br/>
+          <img ng-src="{{talents[player.talent].img}}"/>
+        </div>
+        <div class="span3">
+          <br/>
+          <h5>{{talents[player.talent].label}}</h5>
+
+          <p>{{talents[player.talent].description}}</p>
+        </div>
+      </div>
+
     </div>
-  </div>
-  <br/>
-  <div class="row">
-    <div class="span2">
-      <img ng-src="{{talents[player.talent].img}}"></img>
+
+    <div class="span3">
+      <h5>Statistics</h5>
+
+      <p><strong>Total Damage</strong> {{player.totalDamage}}</p>
+
+      <p><strong>Total Sets</strong> {{player.totalSets}}</p>
+
+      <p><strong>Kills</strong> {{player.kills}}</p>
+
+      <p><strong>Average Damage Per Set</strong> {{player.totalDamage / player.totalSets}}</p>
+
+      <p><strong>Account Created</strong> {{player.createdOn}}</p>
     </div>
-    <div class="span2">
-      <h5>{{talents[player.talent].label}}</h5>
-      <p>{{talents[player.talent].description}}</p>
-    </div>
+
   </div>
 
 
   <hr/>
 
   <div class="row">
-    <div class="span9">
+    <div class="span5">
       <h2>Reset</h2>
     </div>
     <div class="span3">

@@ -56,18 +56,24 @@ var readyController = function ($scope, $timeout, $routeParams, $cookieStore, $l
         $scope.player.talent = "surge";
         $scope.player.totalDamage = 0;
         $scope.player.kills = 0;
+        $scope.player.totalSets = 0;
+        $scope.player.createdOn = new Date().format("fullDate");
         $scope.playerRef.set($scope.player);
       });
     } else {
       $timeout(function () {
-        $scope.player = snap.val();
+        $scope.player = player;
       });
     }
   });
 
+  $scope.savePlayer = function () {
+    $scope.playerRef.set($scope.player);
+  };
+
   $scope.selectTalent = function (talentName) {
     $scope.player.talent = talentName;
-    $scope.playerRef.set($scope.player);
+    this.savePlayer();
     return false;
   };
 
